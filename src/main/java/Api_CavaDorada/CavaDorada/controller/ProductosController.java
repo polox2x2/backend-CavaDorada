@@ -52,10 +52,11 @@ public class ProductosController {
     public List<Object[]>obtenerProductosComidas(){
         return productoService.obtenerProductosComidas();
     }
-    @PutMapping("/reducir-stock")
-    public ResponseEntity<String> reducirStock(@RequestParam Integer cantidad , Integer idProducto){
-        productoService.reducirStock(cantidad,idProducto);
-        return ResponseEntity.ok("stock reducido exitosamen");
+    @PutMapping("/reducir-stock/{idProducto}")
+    public ResponseEntity<String> reducirStock(@PathVariable Integer idProducto, @RequestParam Integer cantidad) {
+        productoService.reducirStock(cantidad, idProducto);
+        return ResponseEntity.ok("Stock reducido exitosamente");
     }
+
 
 }
