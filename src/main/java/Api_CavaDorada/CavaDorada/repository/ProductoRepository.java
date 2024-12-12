@@ -11,13 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductoRepository extends JpaRepository<Productos, Integer> {
 
 
-    @Query("SELECT p.nombre,p.descripcion, pr.nombre , p.categoria, p.precios, p.stock, p.estado " +
-            "FROM Productos p  JOIN p.provedor pr WHERE pr.estado = true AND p.categoria.descripcion ='Bebidas Alcohólicas'" )
-    List<Object[]> findProductoPersonalizadosLicores();
+    @Query("SELECT new map(p.idProducto as id, p.nombre as nombre, p.descripcion as descripcion, pr.nombre as proveedor, p.categoria.descripcion as categoria, p.precios as precio, p.stock as cantidad, p.estado as estado) " +
+            "FROM Productos p JOIN p.provedor pr WHERE pr.estado = true AND p.categoria.descripcion ='Bebidas Alcohólicas'")
+    List<Map<String, Object>> findProductoPersonalizadosLicores();
 
     @Query("SELECT p.nombre,p.descripcion, pr.nombre , p.categoria, p.precios, p.stock, p.estado " +
             "FROM Productos p  JOIN p.provedor pr WHERE pr.estado = true AND p.categoria.descripcion ='Comidas'" )
@@ -35,8 +36,14 @@ public interface ProductoRepository extends JpaRepository<Productos, Integer> {
     @Query("UPDATE Productos p SET p.stock = p.stock - :cantidad WHERE p.idProducto = :idProducto")
     void reducirStock(@Param("cantidad") Integer cantidad, @Param("idProducto") Integer idProducto);
 
+    @Query("SELECT p FROM Productos p WHERE p.categoria.descripcion = 'Bebidas Alcohólicas' " +
+            "AND p.estado = true AND LOWER(p.nombre) LIKE LOWER(CONCAT('%', :busqueda, '%'))")
+    List<Productos> buscarLicoresPorNombre(@Param("busqueda") String busqueda);
 
-
+    // Consulta personalizada para obtener productos de comidas por nombre y categoría
+    @Query("SELECT p FROM Productos p WHERE p.categoria.descripcion = 'Comidas' " +
+            "AND p.estado = true AND LOWER(p.nombre) LIKE LOWER(CONCAT('%', :busqueda, '%'))")
+    List<Productos> buscarComidasPorNombre(@Param("busqueda") String busqueda);
 
 
 

@@ -26,6 +26,8 @@ public class Usuario {
     private String nombre;
     @Column(name = "apellido",nullable = false,length = 20)
     private String apellido;
+    @Column(name = "telefono",length = 15)
+    private String telefono;
     @Column(name = "estado")
     private boolean estado;
 

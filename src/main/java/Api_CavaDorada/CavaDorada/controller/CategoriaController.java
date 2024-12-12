@@ -20,7 +20,7 @@ public class CategoriaController {
         return categoriaService.agregarCategoria(categoria);
     }
     @GetMapping()
-    public List<Categoria>obtenerCategorias (Categoria categoria){
-        return categoriaService.obtenerCategorias(categoria);
+    public List<Categoria>obtenerCategorias (){
+        return categoriaService.obtenerCategorias();
     }
 }

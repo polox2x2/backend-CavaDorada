@@ -18,7 +18,7 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
 
-    public List<Categoria>obtenerCategorias (Categoria categoria){
+    public List<Categoria>obtenerCategorias (){
         return  categoriaRepository.findAll();
     }
     public Categoria getCategoriaById(Integer id) {
