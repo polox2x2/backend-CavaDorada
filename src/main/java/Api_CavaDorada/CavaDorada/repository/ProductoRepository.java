@@ -2,6 +2,7 @@ package Api_CavaDorada.CavaDorada.repository;
 
 
 
+import Api_CavaDorada.CavaDorada.entity.Categoria;
 import Api_CavaDorada.CavaDorada.entity.Productos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -45,7 +46,10 @@ public interface ProductoRepository extends JpaRepository<Productos, Integer> {
             "AND p.estado = true AND LOWER(p.nombre) LIKE LOWER(CONCAT('%', :busqueda, '%'))")
     List<Productos> buscarComidasPorNombre(@Param("busqueda") String busqueda);
 
+    @Query("SELECT c FROM Categoria c WHERE c.descripcion = :descripcion")
+    Categoria findCategoriaByDescripcion(@Param("descripcion") String descripcion);
 
+}
 
 /*
     @Query()
@@ -58,4 +62,4 @@ public interface ProductoRepository extends JpaRepository<Productos, Integer> {
     List<Object[]> OrdenarPorNombre();
 
 */
-}
+

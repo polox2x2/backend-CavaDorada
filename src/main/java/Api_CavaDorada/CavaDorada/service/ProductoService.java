@@ -1,5 +1,6 @@
 package Api_CavaDorada.CavaDorada.service;
 
+import Api_CavaDorada.CavaDorada.entity.Categoria;
 import Api_CavaDorada.CavaDorada.entity.Productos;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,15 +54,15 @@ public class ProductoService {
         }productoRepository.save(producto);
         return producto;
     }
-    public boolean eliminarProductoLogico(Integer id) {
-        Productos producto = productoRepository.findById(id).orElse(null);
-        if (producto != null) {
-            producto.setEstado(false); // Cambio de estado a inactivo
-            productoRepository.save(producto);
-            return true;
-        }
-        return false;
-    }
+//    public boolean eliminarProductoLogico(Integer id) {
+//        Productos producto = productoRepository.findById(id).orElse(null);
+//        if (producto != null) {
+//            producto.setEstado(false); // Cambio de estado a inactivo
+//            productoRepository.save(producto);
+//            return true;
+//        }
+//        return false;
+//    }
 
     public Productos actualizarProducto(Integer id, Productos productos) {
         Productos productoExistente = productoRepository.findById(id).orElse(null);
@@ -102,4 +103,32 @@ public class ProductoService {
         }
         return List.of();  // Si no se encuentra la categoría, retorna una lista vacía.
     }
+    public boolean eliminarProductoLogico(Integer idProducto) {
+        Optional<Productos> productoOpt = productoRepository.findById(idProducto);
+        if (productoOpt.isPresent()) {
+            Productos producto = productoOpt.get();
+            producto.setEstado(false);  // Cambiar el estado a inactivo
+            productoRepository.save(producto);  // Guardar el cambio en la base de datos
+            return true;
+        }
+        return false;
+    }
+    public boolean activarProducto(Integer idProducto) {
+        Optional<Productos> productoOpt = productoRepository.findById(idProducto);
+        if (productoOpt.isPresent()) {
+            Productos producto = productoOpt.get();
+            producto.setEstado(true); // Cambiar el estado a activo
+            productoRepository.save(producto); // Guardar el cambio en la base de datos
+            return true;
+        }
+        return false;
+    }
+    public Categoria obtenerCategoriaPorDescripcion(String descripcion) {
+        return productoRepository.findCategoriaByDescripcion(descripcion);
+    }
+
+    public Productos crearProducto(Productos producto) {
+        return productoRepository.save(producto); // Guardar el nuevo producto
+    }
+
 }
